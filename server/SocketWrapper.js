@@ -21,6 +21,13 @@ class SocketWrapper {
             });
 
             socket.on('createMessage',(data, callback) => {
+                socket.broadcast.emit('newMessage',{
+                    from : data.from,
+                    text : data.text,
+                    createdAt: new Date()
+                });
+                callback({text : 'Data from server'});
+
                 socket.emit('newMessage',{
                     from : data.from,
                     text : data.text,
