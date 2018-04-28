@@ -19,13 +19,15 @@ socket.on('newMessage', function(data,callback){
 
 $('#message-form').on('submit',function(e){
     e.preventDefault();
-
+    const from = $('[name=from]').val();
+    const text = $('[name=message]').val();
     socket.emit('createMessage', {
-        from : $('[name=from]').val(),
-        text : $('[name=message]').val()
+        from,text
     },function (data){
         console.log('Message delivered');
         console.log(data);
     });
+
+    $('[name=message]').val('');
 
 });
