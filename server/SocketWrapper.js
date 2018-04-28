@@ -7,17 +7,26 @@ class SocketWrapper {
             console.log("New connection");
 
             socket.emit('newMessage', {
-                from : 'andrzejh07@gmail.com',
-                text : 'siema leszczu',
+                from : 'Admin',
+                text : 'Welcome in chat app',
                 createdAt : new Date()
+            },function(){
+                console.log('Got it')
             });
 
-            socket.on('createMessage',(data) => {
-                this.io.emit('newMessage',{
+            socket.broadcast.emit('newMessage',{
+                from : 'Admin',
+                text : 'New user joined the chat',
+                createdAt: new Date()
+            });
+
+            socket.on('createMessage',(data, callback) => {
+                socket.broadcast.emit('newMessage',{
                     from : data.from,
                     text : data.text,
                     createdAt: new Date()
                 });
+                callback({text : 'Data from server'})
             });
 
             socket.on("disconnect", () => {
